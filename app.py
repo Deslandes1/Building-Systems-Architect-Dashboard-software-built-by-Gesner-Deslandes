@@ -42,7 +42,7 @@ def login_page():
         <p style='text-align:center;'>📞 (509) 4738-5663 | ✉️ deslandes78@gmail.com</p>
         """, unsafe_allow_html=True)
 
-# ========== MAIN DASHBOARD (no Plotly) ==========
+# ========== MAIN DASHBOARD ==========
 def main_app():
     with st.sidebar:
         st.image("https://cdn-icons-png.flaticon.com/512/2905/2905715.png", width=80)
@@ -78,8 +78,12 @@ def main_app():
         with col3: st.metric("CO₂ Level", f"{random.randint(380,450)} ppm")
         with col4: st.metric("BMS Uptime", "99.98%")
         st.subheader("Supply Air Temperature Trend")
-        df_temp = pd.DataFrame({"Time": pd.date_range(end=datetime.datetime.now(), periods=24, freq="H"), "Temp": [20.5+0.8*np.sin(i/3) for i in range(24)]})
-        st.line_chart(df_temp.set_index("Time"))
+        # Fixed: use '60min' instead of 'H' to avoid pandas frequency error
+        end_time = datetime.datetime.now()
+        time_index = pd.date_range(end=end_time, periods=24, freq='60min')
+        temp_values = [20.5 + 0.8 * np.sin(i/3) for i in range(24)]
+        df_temp = pd.DataFrame({"Temp": temp_values}, index=time_index)
+        st.line_chart(df_temp)
     
     with tabs[1]:
         st.subheader("CHW & LTHW Networks")
