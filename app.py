@@ -21,9 +21,6 @@ if "username" not in st.session_state:
 if "language" not in st.session_state:
     st.session_state.language = "en"
 
-# ========== SIMPLE ENGLISH UI (can be extended) ==========
-# For brevity, English only – professional dashboard.
-
 # ========== LOGIN PAGE ==========
 def login_page():
     col1, col2, col3 = st.columns([1,2,1])
@@ -52,7 +49,6 @@ def login_page():
 
 # ========== MAIN DASHBOARD ==========
 def main_app():
-    # Sidebar with pricing and contact
     with st.sidebar:
         st.image("https://cdn-icons-png.flaticon.com/512/2905/2905715.png", width=80)
         st.markdown(f"**Welcome, {st.session_state.username}**")
@@ -72,7 +68,6 @@ def main_app():
             st.rerun()
         st.caption("© 2026 GlobalInternet.py – built by Gesner Deslandes")
     
-    # Main header
     st.markdown("""
     <div style="background: linear-gradient(90deg, #1e3c72, #2a5298); padding: 1rem; border-radius: 20px; color: white; text-align: center; margin-bottom: 2rem;">
         <h1>🏢 Building Systems Architect Dashboard</h1>
@@ -80,7 +75,6 @@ def main_app():
     </div>
     """, unsafe_allow_html=True)
     
-    # Tabs covering all job responsibilities
     tabs = st.tabs([
         "📊 BMS Overview",
         "🌡️ Thermal Networks",
@@ -90,11 +84,8 @@ def main_app():
         "📋 Commissioning & Reports"
     ])
     
-    # ========== TAB 0: BMS OVERVIEW ==========
     with tabs[0]:
         st.subheader("Building Management System (BMS) Real‑time Performance")
-        
-        # Simulated sensor data
         col1, col2, col3, col4 = st.columns(4)
         with col1:
             st.metric("AHU-1 Supply Temp", f"{random.uniform(18.5, 22.5):.1f} °C", delta="+0.3")
@@ -105,8 +96,6 @@ def main_app():
         with col4:
             st.metric("BMS Uptime", "99.98%", delta="+0.01%")
         
-        # BMS alarm log
-        st.subheader("Active Alarms & Events")
         alarms = pd.DataFrame({
             "Time": [datetime.datetime.now().strftime("%H:%M:%S"), "08:23:15", "07:45:00"],
             "Equipment": ["AHU-3", "Chiller #2", "VAV Box 12"],
@@ -115,7 +104,6 @@ def main_app():
         })
         st.dataframe(alarms, use_container_width=True)
         
-        # BMS trend chart
         st.subheader("Supply Air Temperature (Last 24h)")
         time_series = pd.DataFrame({
             "Time": pd.date_range(end=datetime.datetime.now(), periods=24, freq="H"),
@@ -125,10 +113,8 @@ def main_app():
         fig.update_layout(height=400)
         st.plotly_chart(fig, use_container_width=True)
     
-    # ========== TAB 1: THERMAL NETWORKS (CHW / LTHW) ==========
     with tabs[1]:
         st.subheader("Chilled Water (CHW) & Low Temperature Hot Water (LTHW) Networks")
-        
         col1, col2 = st.columns(2)
         with col1:
             st.metric("CHW Supply Temp", "6.2 °C", delta="-0.3")
@@ -139,16 +125,12 @@ def main_app():
             st.metric("LTHW Return", "38.2 °C", delta="-0.2")
             st.metric("LTHW Pressure", "2.8 bar", delta="0.0")
         
-        # Heat network schematic (simulated image placeholder)
         st.markdown("**Thermal Network Schematic**")
         st.image("https://via.placeholder.com/800x300?text=CHW+LTHW+Network+Diagram", use_column_width=True)
         
-        # Optimisation opportunities
-        st.subheader("Decarbonisation Integration")
         st.success("✅ Heat‑network‑ready: Electric heat pumps planned for 2027")
         st.info("💡 Recommendation: Upgrade CHW plant to magnetic bearing chillers (estimated 22% efficiency gain)")
     
-    # ========== TAB 2: ELECTRICAL INFRASTRUCTURE ==========
     with tabs[2]:
         st.subheader("Primary Electrical Distribution")
         col1, col2, col3 = st.columns(3)
@@ -162,7 +144,6 @@ def main_app():
             st.metric("UPS Load (Data Centre)", "43%", delta="-2%")
             st.metric("Standby Generator", "Ready", delta="Last test: OK")
         
-        st.subheader("Critical Switchboard Monitoring")
         switch_data = pd.DataFrame({
             "Board": ["MCC-1", "MCC-2", "Lighting Panel A", "BMS Panel"],
             "Current (A)": [280, 315, 45, 12],
@@ -172,11 +153,8 @@ def main_app():
         st.dataframe(switch_data, use_container_width=True)
         st.caption("All circuits comply with BS 7671 (18th Edition)")
     
-    # ========== TAB 3: ASSET REGISTER (BIM READY) ==========
     with tabs[3]:
         st.subheader("MEP Asset Register & BIM Integration")
-        
-        # Asset table
         assets = pd.DataFrame({
             "Asset ID": ["MEP-1001", "MEP-1002", "MEP-1003", "MEP-1004"],
             "Equipment": ["Centrifugal Chiller", "AHU-1", "VSD Pump", "LV Switchgear"],
@@ -186,15 +164,10 @@ def main_app():
             "Status": ["Operational", "Operational", "Review", "Operational"]
         })
         st.dataframe(assets, use_container_width=True)
-        
-        st.markdown("**BIM Model Link**")
         st.info("🔗 BIM model available via COBie export – Revit 2025 compatible. Asset data synchronised with BIM 360.")
-        
-        # Change log
         st.subheader("Infrastructure Record Updates")
         st.write("Last change: 2026-04-24 – Updated CHW pipework schematics (drawing M-401 Rev B)")
     
-    # ========== TAB 4: DECARBONISATION & ENERGY ==========
     with tabs[4]:
         st.subheader("Energy Performance & Carbon Reduction Tracker")
         col1, col2 = st.columns(2)
@@ -205,8 +178,6 @@ def main_app():
             st.metric("Renewable Generation (PV)", "345 MWh", delta="+12%")
             st.metric("Heat Pump Contribution", "38%", delta="+5%")
         
-        # Energy use breakdown
-        st.subheader("Monthly Energy by System")
         energy_data = pd.DataFrame({
             "Month": ["Jan", "Feb", "Mar", "Apr", "May"],
             "HVAC": [320, 305, 290, 275, 280],
@@ -215,13 +186,10 @@ def main_app():
         })
         fig2 = px.bar(energy_data, x="Month", y=["HVAC", "Lighting", "Other"], title="Energy Usage (MWh)")
         st.plotly_chart(fig2, use_container_width=True)
-        
         st.success("✅ Target: Net zero carbon by 2035 – On track. Electrification of CHW plant scheduled for 2028.")
     
-    # ========== TAB 5: COMMISSIONING & REPORTS ==========
     with tabs[5]:
         st.subheader("Commissioning Witness & Project Delivery")
-        st.markdown("**Recent Commissioning Activities**")
         comm_log = pd.DataFrame({
             "Date": ["2026-04-22", "2026-04-15", "2026-04-10"],
             "System": ["AHU-5 VAV Boxes", "CHW Pump #4", "BMS Upgrade"],
@@ -230,7 +198,6 @@ def main_app():
         })
         st.dataframe(comm_log, use_container_width=True)
         
-        st.subheader("Generate Report")
         report_type = st.selectbox("Select Report Type", ["Monthly BMS Summary", "Commissioning Log", "Asset Condition Report", "Carbon Reduction Plan"])
         if st.button("📥 Generate & Download CSV"):
             df_report = pd.DataFrame({"Sample Data": [report_type, datetime.datetime.now().isoformat()]})
@@ -238,13 +205,11 @@ def main_app():
             st.download_button("Download CSV", csv, f"{report_type.replace(' ', '_')}.csv", "text/csv")
             st.success("Report generated successfully")
         
-        st.subheader("Soft Landings & Handover Support")
         st.info("📌 All capital projects are supported through the soft‑landings framework. Post‑occupancy evaluations scheduled for Q3 2026.")
     
     st.markdown("---")
     st.caption("Built with 💖 by Gesner Deslandes – GlobalInternet.py")
 
-# ========== ROUTING ==========
 if not st.session_state.authenticated:
     login_page()
 else:
